@@ -1,34 +1,19 @@
-// Last updated: 8/13/2026, 9:43:00 PM
-1
-2class Solution {
-3    public int sumDistance(int[] nums, String s, int d) {
-4        
-5        int n = nums.length;
-6        long temp[] = new long[n];
-7        for (int i = 0; i < s.length(); i++) {
-8            if(s.charAt(i) == 'R'){
-9                temp[i] = (long)nums[i] + d;
-10            }else{
-11                temp[i] = (long)nums[i] - d;
-12            }
-13        }
-14
-15        Arrays.sort(temp);
-16
-17        long res = 0;
-18        int j = n - 1;
-19
-20        for (int i = 0; i < n; i++) {
-21            if (j - i <= 0) {
-22                break;
-23            }
-24            long diff = Math.abs(temp[j] - temp[i]);
-25            long prod = diff * (j - i);
-26            res += prod;
-27            res %= 1000000007;
-28            j--;
-29        }
-30
-31        return (int) res;
-32    }
-33}
+// Last updated: 8/13/2026, 9:48:55 PM
+1class Solution {
+2    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+3        int res = 0;
+4        Map<Integer, Integer> map = new HashMap<>();
+5        for(int a: nums1) {
+6            for(int b: nums2) {
+7                map.put(a+b, map.getOrDefault(a+b, 0)+1);
+8            }
+9        }
+10
+11        for(int c: nums3) {
+12            for(int d: nums4) {
+13                res += map.getOrDefault(-(c+d), 0);
+14            }
+15        }
+16        return res;
+17    }
+18}
