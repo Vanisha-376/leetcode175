@@ -1,43 +1,51 @@
-// Last updated: 8/13/2026, 9:51:26 PM
-1class Solution {
+// Last updated: 8/13/2026, 9:52:24 PM
+1
 2
-3    private boolean isValid(char[][] board, int row, int col, char ch) {
-4
-5        for (int k = 0; k < 9; k++) {
+3class RandomizedSet {
+4    private ArrayList<Integer> list;
+5    private Map<Integer, Integer> map;
 6
-7            // Check row
-8            if (board[row][k] == ch && k != col)
-9                return false;
-10
-11            // Check column
-12            if (board[k][col] == ch && k != row)
-13                return false;
-14
-15            // Check 3 x 3 box
-16            int d1 = 3 * (row / 3) + (k / 3);
-17            int d2 = 3 * (col / 3) + (k % 3);
+7    public RandomizedSet() {
+8        list = new ArrayList<>();
+9        map = new HashMap<>();
+10    }
+11
+12    public boolean search(int val) {
+13        return map.containsKey(val);
+14    }
+15
+16    public boolean insert(int val) {
+17        if (search(val)) return false;
 18
-19            if (board[d1][d2] == ch && (d1 != row || d2 != col))
-20                return false;
-21        }
-22
-23        return true;
-24    }
-25
-26    public boolean isValidSudoku(char[][] board) {
-27
-28        for (int i = 0; i < board.length; i++) {
-29
-30            for (int j = 0; j < board.length; j++) {
-31
-32                if (board[i][j] != '.') {
-33
-34                    if (!isValid(board, i, j, board[i][j]))
-35                        return false;
-36                }
-37            }
-38        }
-39
-40        return true;
-41    }
-42}
+19        list.add(val);
+20        map.put(val, list.size() - 1);
+21        return true;
+22    }
+23
+24    public boolean remove(int val) {
+25        if (!search(val)) return false;
+26
+27        int index = map.get(val);
+28        list.set(index, list.get(list.size() - 1));
+29        map.put(list.get(index), index);
+30        list.remove(list.size() - 1);
+31        map.remove(val);
+32
+33        return true;
+34    }
+35
+36    public int getRandom() {
+37        Random rand = new Random();
+38        return list.get(rand.nextInt(list.size()));
+39    }
+40}
+41
+42
+43
+44/**
+45 * Your RandomizedSet object will be instantiated and called as such:
+46 * RandomizedSet obj = new RandomizedSet();
+47 * boolean param_1 = obj.insert(val);
+48 * boolean param_2 = obj.remove(val);
+49 * int param_3 = obj.getRandom();
+50 */
