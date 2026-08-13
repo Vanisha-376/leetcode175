@@ -1,46 +1,23 @@
-// Last updated: 8/13/2026, 10:03:43 PM
-1class Solution {
-2    public boolean canSplit(int[] nums, int n, int k, int maxSum) {
-3        int subarrayCount = 1;
-4        int currentSum = 0;
-5
-6        for (int i = 0; i < n; i++) {
-7            if (nums[i] > maxSum) {
-8                return false;
-9            }
-10            if (currentSum + nums[i] <= maxSum) {
-11                currentSum += nums[i];
-12            } else {
-13                subarrayCount++;
-14                currentSum = nums[i];
-15            }
-16        }
-17
-18        return subarrayCount <= k;
-19    }
-20
-21    public int splitArray(int[] nums, int k) {
-22        int n = nums.length;
-23        int sum = 0;
-24        int ans = -1;
-25
-26        for (int i = 0; i < n; i++) {
-27            sum += nums[i];
-28        }
-29
-30        int start = 0;
-31        int end = sum;
-32
-33        while (start <= end) {
-34            int mid = start + (end - start) / 2;
-35            if (canSplit(nums, n, k, mid)) {
-36                ans = mid;
-37                end = mid - 1;
-38            } else {
-39                start = mid + 1;
-40            }
-41        }
-42
-43        return ans;
-44    }
-45}
+// Last updated: 8/13/2026, 10:05:35 PM
+1public class Solution {
+2    public Node copyRandomList(Node head) {
+3        if (head == null) return null;
+4        
+5        HashMap<Node, Node> oldToNew = new HashMap<>();
+6        
+7        Node curr = head;
+8        while (curr != null) {
+9            oldToNew.put(curr, new Node(curr.val));
+10            curr = curr.next;
+11        }
+12        
+13        curr = head;
+14        while (curr != null) {
+15            oldToNew.get(curr).next = oldToNew.get(curr.next);
+16            oldToNew.get(curr).random = oldToNew.get(curr.random);
+17            curr = curr.next;
+18        }
+19        
+20        return oldToNew.get(head);
+21    }
+22}
