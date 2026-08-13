@@ -1,51 +1,14 @@
-// Last updated: 8/13/2026, 9:52:24 PM
-1
-2
-3class RandomizedSet {
-4    private ArrayList<Integer> list;
-5    private Map<Integer, Integer> map;
-6
-7    public RandomizedSet() {
-8        list = new ArrayList<>();
-9        map = new HashMap<>();
-10    }
-11
-12    public boolean search(int val) {
-13        return map.containsKey(val);
-14    }
-15
-16    public boolean insert(int val) {
-17        if (search(val)) return false;
-18
-19        list.add(val);
-20        map.put(val, list.size() - 1);
-21        return true;
-22    }
-23
-24    public boolean remove(int val) {
-25        if (!search(val)) return false;
-26
-27        int index = map.get(val);
-28        list.set(index, list.get(list.size() - 1));
-29        map.put(list.get(index), index);
-30        list.remove(list.size() - 1);
-31        map.remove(val);
-32
-33        return true;
-34    }
-35
-36    public int getRandom() {
-37        Random rand = new Random();
-38        return list.get(rand.nextInt(list.size()));
-39    }
-40}
-41
-42
-43
-44/**
-45 * Your RandomizedSet object will be instantiated and called as such:
-46 * RandomizedSet obj = new RandomizedSet();
-47 * boolean param_1 = obj.insert(val);
-48 * boolean param_2 = obj.remove(val);
-49 * int param_3 = obj.getRandom();
-50 */
+// Last updated: 8/13/2026, 9:52:59 PM
+1class Solution {
+2    public ListNode removeNthFromEnd(ListNode head, int n) {
+3        ListNode fast = head, slow = head;
+4        for (int i = 0; i < n; i++) fast = fast.next;
+5        if (fast == null) return head.next;
+6        while (fast.next != null) {
+7            fast = fast.next;
+8            slow = slow.next;
+9        }
+10        slow.next = slow.next.next;
+11        return head;
+12    }
+13}
