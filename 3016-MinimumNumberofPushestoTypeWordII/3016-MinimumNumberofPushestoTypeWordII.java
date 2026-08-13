@@ -1,55 +1,43 @@
-// Last updated: 8/13/2026, 9:50:28 PM
+// Last updated: 8/13/2026, 9:51:26 PM
 1class Solution {
 2
-3    public int[] topKFrequent(int[] nums, int k) {
+3    private boolean isValid(char[][] board, int row, int col, char ch) {
 4
-5        int n = nums.length;
+5        for (int k = 0; k < 9; k++) {
 6
-7        // Step 1: Count frequency of each number
-8        HashMap<Integer, Integer> map = new HashMap<>();
-9
-10        for (int num : nums) {
-11            map.put(num, map.getOrDefault(num, 0) + 1);
-12        }
-13
-14        // bucket[i] stores numbers having frequency i
-15        List<Integer>[] bucket = new ArrayList[n + 1];
-16
-17        // Step 2: Place numbers into their frequency bucket
-18        for (int key : map.keySet()) {
-19
-20            int freq = map.get(key);
-21
-22            // Create list if bucket is empty
-23            if (bucket[freq] == null) {
-24                bucket[freq] = new ArrayList<>();
-25            }
-26
-27            // Add number into its frequency bucket
-28            bucket[freq].add(key);
-29        }
-30
-31        int[] ans = new int[k];
-32        int index = 0;
+7            // Check row
+8            if (board[row][k] == ch && k != col)
+9                return false;
+10
+11            // Check column
+12            if (board[k][col] == ch && k != row)
+13                return false;
+14
+15            // Check 3 x 3 box
+16            int d1 = 3 * (row / 3) + (k / 3);
+17            int d2 = 3 * (col / 3) + (k % 3);
+18
+19            if (board[d1][d2] == ch && (d1 != row || d2 != col))
+20                return false;
+21        }
+22
+23        return true;
+24    }
+25
+26    public boolean isValidSudoku(char[][] board) {
+27
+28        for (int i = 0; i < board.length; i++) {
+29
+30            for (int j = 0; j < board.length; j++) {
+31
+32                if (board[i][j] != '.') {
 33
-34        // Step 3: Traverse from highest frequency bucket
-35        for (int i = bucket.length - 1; i >= 0 && index < k; i--) {
-36
-37            // Skip empty buckets
-38            if (bucket[i] != null) {
+34                    if (!isValid(board, i, j, board[i][j]))
+35                        return false;
+36                }
+37            }
+38        }
 39
-40                // Take all numbers from current bucket
-41                for (int num : bucket[i]) {
-42
-43                    ans[index++] = num;
-44
-45                    // Stop once k elements are collected
-46                    if (index == k)
-47                        break;
-48                }
-49            }
-50        }
-51
-52        return ans;
-53    }
-54}
+40        return true;
+41    }
+42}
