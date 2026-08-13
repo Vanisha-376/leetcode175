@@ -1,23 +1,31 @@
-// Last updated: 8/13/2026, 10:05:35 PM
-1public class Solution {
-2    public Node copyRandomList(Node head) {
-3        if (head == null) return null;
-4        
-5        HashMap<Node, Node> oldToNew = new HashMap<>();
-6        
-7        Node curr = head;
-8        while (curr != null) {
-9            oldToNew.put(curr, new Node(curr.val));
-10            curr = curr.next;
-11        }
-12        
-13        curr = head;
-14        while (curr != null) {
-15            oldToNew.get(curr).next = oldToNew.get(curr.next);
-16            oldToNew.get(curr).random = oldToNew.get(curr.random);
-17            curr = curr.next;
-18        }
-19        
-20        return oldToNew.get(head);
-21    }
-22}
+// Last updated: 8/13/2026, 10:07:15 PM
+1/**
+2 * Definition for singly-linked list.
+3 * class ListNode {
+4 *     int val;
+5 *     ListNode next;
+6 *     ListNode(int x) {
+7 *         val = x;
+8 *         next = null;
+9 *     }
+10 * }
+11 */
+12public class Solution {
+13    public ListNode detectCycle(ListNode head) {
+14        ListNode slow=head;
+15        ListNode fast=head;
+16        while(fast!=null && fast.next!=null){
+17            slow=slow.next;
+18            fast=fast.next.next;
+19            if(fast==slow){
+20                slow=head;
+21                while(fast!=slow){
+22                    slow=slow.next;
+23                    fast=fast.next;
+24                }
+25                return slow;
+26            }
+27        }
+28        return null;
+29    }
+30}
